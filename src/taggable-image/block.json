@@ -1,0 +1,22 @@
+{
+	"name": "taggable/image",
+	"category": "layout",
+	"attributes": {
+		"id": {
+			"type": "number"
+		},
+		"url": {
+			"type": "string",
+			"source": "attribute",
+			"selector": "img",
+			"attribute": "src"
+		},
+		"alt": {
+			"type": "string",
+			"source": "attribute",
+			"selector": "img",
+			"attribute": "alt",
+			"default": ""
+		}
+	}
+}

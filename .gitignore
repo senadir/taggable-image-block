@@ -1,0 +1,6 @@
+/wordpress
+/.wp-tests
+/node_modules
+xdebug*out
+/build
+.DS_Store

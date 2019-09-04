@@ -1,0 +1,79 @@
+{
+  "name": "tagging-image-block",
+  "version": "0.0.1",
+  "description": "Tag images with text",
+  "author": "Nadir Seghir",
+  "license": "GPL-2.0-or-later",
+  "keywords": [
+    "gutenberg",
+    "block",
+    "wordpress",
+    "tagging",
+    "image"
+  ],
+  "homepage": "https://github.com/senadir/tagging-image-block#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/senadir/tagging-image-block.git"
+  },
+  "bugs": {
+    "url": "https://github.com/senadir/tagging-image-block/issues"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@wordpress/blocks": "^6.6.0",
+    "@wordpress/components": "^8.2.0",
+    "@wordpress/element": "^2.7.0",
+    "@wordpress/i18n": "^3.6.0",
+    "classnames": "^2.2.6"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^4.1.0",
+    "husky": "^3.0.5",
+    "lint-staged": "^9.2.5"
+  },
+  "scripts": {
+    "build": "wp-scripts build",
+    "check-engines": "wp-scripts check-engines",
+    "check-licenses": "wp-scripts check-licenses",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "lint:pkg-json": "wp-scripts lint-pkg-json",
+    "start": "wp-scripts start",
+    "test:e2e": "wp-scripts test-e2e",
+    "test:unit": "wp-scripts test-unit-js",
+    "env": "wp-scripts env"
+  },
+  "wp-env": {
+    "plugin-dir": "taggable-image-block",
+    "plugin-name": "taggable-image-block",
+    "docker-template": "./bin/docker-compose.override.yml.template",
+    "welcome-logo": [
+      ",⁻⁻⁻·       .                 |",
+      "|  ،⁓’.   . |---  ,---. ,---. |---. ,---. ,---. ,---.",
+      "|   | |   | |     |---' |   | |   | |---' |     |   |",
+      "`---' `---' `---’ `---’ '   ` `---' `---’ `     `---|",
+      "                                                `---'"
+    ],
+    "welcome-build-command": "npm run dev"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "package.json": [
+      "wp-scripts lint-pkg-json"
+    ],
+    "**/*.scss": [
+      "wp-scripts lint-style"
+    ],
+    "**/*.js": [
+      "wp-scripts lint-js"
+    ]
+  }
+}
