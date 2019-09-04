@@ -1,6 +1,6 @@
 <?php
 
-class Tagging_Images_Block_Plugin {
+class Taggable_Image_Block_Plugin {
 	/**
 	 * Registers the initial hooks to get the plugin going, if you're
 	 */
