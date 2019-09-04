@@ -1,5 +1,5 @@
 {
-  "name": "tagging-image-block",
+  "name": "taggable-image-block",
   "version": "0.0.1",
   "description": "Tag images with text",
   "author": "Nadir Seghir",
@@ -11,13 +11,13 @@
     "tagging",
     "image"
   ],
-  "homepage": "https://github.com/senadir/tagging-image-block#readme",
+  "homepage": "https://github.com/senadir/taggable-image-block#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/senadir/tagging-image-block.git"
+    "url": "git+https://github.com/senadir/taggable-image-block.git"
   },
   "bugs": {
-    "url": "https://github.com/senadir/tagging-image-block/issues"
+    "url": "https://github.com/senadir/taggable-image-block/issues"
   },
   "directories": {
     "test": "tests"
