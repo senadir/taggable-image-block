@@ -17,6 +17,12 @@
 			"selector": "img",
 			"attribute": "alt",
 			"default": ""
+		},
+		"dots": {
+			"type": "array",
+			"source": "attribute",
+			"selector": "figure",
+			"attribute": "data-dots"
 		}
 	}
 }

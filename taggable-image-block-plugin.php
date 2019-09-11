@@ -26,15 +26,15 @@ class Taggable_Image_Block_Plugin {
 		);
 		wp_register_style(
 			'taggable-image-block',
-			plugins_url( 'style.css', __FILE__ ),
+			plugins_url( 'build/style.blocks.css', __FILE__ ),
 			array( ),
-			filemtime( plugin_dir_path( __FILE__ ) . 'style.css' )
+			filemtime( plugin_dir_path( __FILE__ ) . 'build/style.blocks.css' )
 		);
 		wp_register_style(
 			'taggable-image-block-editor',
-			plugins_url( 'editor.css', __FILE__ ),
+			plugins_url( 'build/editor.blocks.css', __FILE__ ),
 			array( 'wp-edit-blocks' ),
-			filemtime( plugin_dir_path( __FILE__ ) . 'editor.css' )
+			filemtime( plugin_dir_path( __FILE__ ) . 'build/editor.blocks.css' )
 		);
 		register_block_type( 'taggable/image', array(
 			'style' => 'taggable-image-block',

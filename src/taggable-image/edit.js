@@ -2,6 +2,9 @@
  * External dependencies
  */
 import { last } from 'lodash';
+import uuid from 'uuid/v1';
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 /**
  * WordPress dependencies
  */
@@ -29,12 +32,14 @@ import {
 import { __, sprintf } from '@wordpress/i18n';
 import { getPath } from '@wordpress/url';
 import { isBlobURL } from '@wordpress/blob';
+import { useRef } from '@wordpress/element';
 /**
  * Internal dependencies
  */
 import icon from './icon';
+import DotDragArea from './components/dot-drag-area';
 
-function edit( {
+function Edit( {
 	attributes,
 	setAttributes,
 	className,
@@ -45,7 +50,9 @@ function edit( {
 		id,
 		url,
 		alt,
+		dots = [],
 	} = attributes;
+	const imageRef = useRef( null );
 	const onSelectMedia = ( media ) => {
 		if ( ! media || ! media.url ) {
 			setAttributes( { url: undefined, id: undefined } );
@@ -136,6 +143,17 @@ function edit( {
 		defaultedAlt = __( 'This image has an empty alt attribute' );
 	}
 
+	const addTag = ( { target, clientX, clientY } ) => {
+		if ( target === imageRef.current ) {
+			const rect = target.getBoundingClientRect();
+			const { x, y } = {
+				x: ( clientX - rect.left ) + imageRef.current.offsetLeft,
+				y: ( clientY - rect.top ) + imageRef.current.offsetTop,
+			};
+			setAttributes( { dots: { ...dots, [ uuid() ]: { x, y } } } );
+		}
+	};
+
 	return (
 		<>
 			{ control }
@@ -146,11 +164,18 @@ function edit( {
 				/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */
 			}
 			{ url && (
-				<img
-					className={ className }
-					src={ url }
-					alt={ defaultedAlt }
-				/>
+				<div className="wp-block-taggable-image-container">
+					<DndProvider backend={ HTML5Backend }>
+						<DotDragArea dots={ dots } setDots={ setAttributes } />
+					</DndProvider>
+					<img
+						className={ className }
+						src={ url }
+						alt={ defaultedAlt }
+						onClick={ addTag }
+						ref={ imageRef }
+					/>
+				</div>
 			) }
 			{ isBlobURL( url ) && <Spinner /> }
 			{
@@ -163,4 +188,4 @@ function edit( {
 export default compose( [
 	withNotices,
 	withInstanceId,
-] )( edit );
+] )( Edit );

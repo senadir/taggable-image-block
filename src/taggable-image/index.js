@@ -12,7 +12,7 @@ import icon from './icon';
 import metadata from './block.json';
 import transforms from './transforms';
 
-const { name, category } = metadata;
+const { name, category, attributes } = metadata;
 
 export { metadata, name };
 
@@ -27,4 +27,5 @@ export const settings = {
 	save,
 	transforms,
 	edit,
+	attributes,
 };
