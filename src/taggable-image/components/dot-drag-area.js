@@ -6,25 +6,29 @@ import { useDrop } from 'react-dnd';
  * Internal dependencies
  */
 import Dot from './dot';
-import { type } from '../shared';
+import types from '../shared';
 
-function DotDragArea( { dots, setDots } ) {
+function DotDragArea( { dots, setDots, children } ) {
 	const [ , dropRef ] = useDrop( {
-		accept: type,
-		drop( { id, prevX, prevY }, monitor ) {
+		accept: types.DOT,
+		drop( { id, x, y }, monitor ) {
 			const delta = monitor.getDifferenceFromInitialOffset();
-			const x = Math.round( prevX + delta.x );
-			const y = Math.round( prevY + delta.y );
-			console.log( x, y );
-			setDots( { dots: { ...dots, [ id ]: { x, y } } } );
+			const newX = Math.round( x + delta.x );
+			const newY = Math.round( y + delta.y );
+			moveDot( id, newX, newY );
+			return undefined;
 		},
 	} );
+	const moveDot = ( id, x, y ) => {
+		setDots( { ...dots, [ id ]: { x, y } } );
+	};
 
 	return (
-		<div ref={ dropRef }>
-			{ Object.entries( dots ).map( ( [ key, { x, y } ] ) =>
+		<div ref={ dropRef } style={ { position: 'relative' } }>
+			{ Object.entries( dots ).map( ( [ key, { x, y } ] ) => (
 				<Dot key={ key } id={ key } x={ x } y={ y } />
-			) }
+			) ) }
+			{ children }
 		</div>
 	);
 }

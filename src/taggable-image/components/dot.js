@@ -2,22 +2,32 @@
  * External dependencies
  */
 import { useDrag } from 'react-dnd';
+import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { type } from '../shared';
+import types from '../shared';
 
 export default function Dot( { id, x, y } ) {
 	const [ { isDragging }, dragRef ] = useDrag( {
-		item: { type, id, x, y },
+		item: { id, x, y, type: types.DOT },
 		collect: ( monitor ) => {
-			console.log( monitor );
 			return { isDragging: monitor.isDragging() };
 		},
 	} );
 	if ( isDragging ) {
 		return <div ref={ dragRef } />;
 	}
-	return <div ref={ dragRef } id={ id } className="wp-block-taggable-image-dot" style={ { left: x, top: y } }></div>;
+	return (
+		<div
+			ref={ dragRef }
+			id={ id }
+			className={
+				classnames( [
+					'wp-block-taggable-image-dot',
+					{ 'is-dargging': isDragging },
+				] ) }
+			style={ { left: x, top: y } }
+		/>
+	);
 }
-

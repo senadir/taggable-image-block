@@ -1,1 +1,3 @@
-export const type = 'dot';
+export default {
+	DOT: 'dot',
+};

@@ -142,7 +142,9 @@ function Edit( {
 	} else {
 		defaultedAlt = __( 'This image has an empty alt attribute' );
 	}
-
+	const setDots = ( nextDots ) => {
+		setAttributes( { dots: nextDots } );
+	};
 	const addTag = ( { target, clientX, clientY } ) => {
 		if ( target === imageRef.current ) {
 			const rect = target.getBoundingClientRect();
@@ -150,7 +152,7 @@ function Edit( {
 				x: ( clientX - rect.left ) + imageRef.current.offsetLeft,
 				y: ( clientY - rect.top ) + imageRef.current.offsetTop,
 			};
-			setAttributes( { dots: { ...dots, [ uuid() ]: { x, y } } } );
+			setDots( { ...dots, [ uuid() ]: { x, y } } );
 		}
 	};
 
@@ -166,15 +168,16 @@ function Edit( {
 			{ url && (
 				<div className="wp-block-taggable-image-container">
 					<DndProvider backend={ HTML5Backend }>
-						<DotDragArea dots={ dots } setDots={ setAttributes } />
+						<DotDragArea dots={ dots } setDots={ setDots }>
+							<img
+								className={ className }
+								src={ url }
+								alt={ defaultedAlt }
+								onClick={ addTag }
+								ref={ imageRef }
+							/>
+						</DotDragArea>
 					</DndProvider>
-					<img
-						className={ className }
-						src={ url }
-						alt={ defaultedAlt }
-						onClick={ addTag }
-						ref={ imageRef }
-					/>
 				</div>
 			) }
 			{ isBlobURL( url ) && <Spinner /> }
