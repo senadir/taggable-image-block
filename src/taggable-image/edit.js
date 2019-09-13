@@ -5,6 +5,7 @@ import { last } from 'lodash';
 import uuid from 'uuid/v1';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
@@ -17,10 +18,7 @@ import {
 	PanelBody,
 	TextareaControl,
 } from '@wordpress/components';
-import {
-	compose,
-	withInstanceId,
-} from '@wordpress/compose';
+import { compose } from '@wordpress/compose';
 import {
 	BlockControls,
 	MediaPlaceholder,
@@ -32,7 +30,7 @@ import {
 import { __, sprintf } from '@wordpress/i18n';
 import { getPath } from '@wordpress/url';
 import { isBlobURL } from '@wordpress/blob';
-import { useRef } from '@wordpress/element';
+import { useRef, useState, useEffect } from '@wordpress/element';
 /**
  * Internal dependencies
  */
@@ -45,12 +43,12 @@ function Edit( {
 	className,
 	noticeUI,
 	noticeOperations,
+	isSelected,
 } ) {
 	const {
 		id,
 		url,
 		alt,
-		dots = [],
 	} = attributes;
 	const imageRef = useRef( null );
 	const onSelectMedia = ( media ) => {
@@ -70,6 +68,13 @@ function Edit( {
 	};
 
 	const placeholderIcon = <BlockIcon icon={ icon } />;
+
+	const [ isAddingTags, setIsAddingTags ] = useState( false );
+	useEffect( () => {
+		if ( ! isSelected ) {
+			setIsAddingTags( false );
+		}
+	}, [ isSelected ] );
 	const control = ( <>
 		<BlockControls>
 			<>
@@ -90,6 +95,14 @@ function Edit( {
 						/>
 					</Toolbar>
 				</MediaUploadCheck>
+				<Toolbar>
+					<IconButton
+						className={ classnames( [ 'components-toolbar__control', { 'is-active': isAddingTags } ] ) }
+						label={ __( 'Add tags' ) }
+						icon="tag"
+						onClick={ ( ) => setIsAddingTags( ! isAddingTags ) }
+					/>
+				</Toolbar>
 			</>
 		</BlockControls>
 		{ ! url && (
@@ -142,9 +155,10 @@ function Edit( {
 	} else {
 		defaultedAlt = __( 'This image has an empty alt attribute' );
 	}
-	const setDots = ( nextDots ) => {
+	/*const setDots = ( nextDots ) => {
 		setAttributes( { dots: nextDots } );
-	};
+	};*/
+	const [ dots, setDots ] = useState( {} );
 	const addTag = ( { target, clientX, clientY } ) => {
 		if ( target === imageRef.current ) {
 			const rect = target.getBoundingClientRect();
@@ -155,7 +169,6 @@ function Edit( {
 			setDots( { ...dots, [ uuid() ]: { x, y } } );
 		}
 	};
-
 	return (
 		<>
 			{ control }
@@ -173,7 +186,7 @@ function Edit( {
 								className={ className }
 								src={ url }
 								alt={ defaultedAlt }
-								onClick={ addTag }
+								onClick={ ( event ) => isAddingTags ? addTag( event ) : false }
 								ref={ imageRef }
 							/>
 						</DotDragArea>
@@ -190,5 +203,4 @@ function Edit( {
 
 export default compose( [
 	withNotices,
-	withInstanceId,
 ] )( Edit );
