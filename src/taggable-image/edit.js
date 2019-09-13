@@ -5,7 +5,6 @@ import { last } from 'lodash';
 import uuid from 'uuid/v1';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
@@ -30,7 +29,7 @@ import {
 import { __, sprintf } from '@wordpress/i18n';
 import { getPath } from '@wordpress/url';
 import { isBlobURL } from '@wordpress/blob';
-import { useRef, useState, useEffect } from '@wordpress/element';
+import { useRef, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
@@ -43,7 +42,6 @@ function Edit( {
 	className,
 	noticeUI,
 	noticeOperations,
-	isSelected,
 } ) {
 	const {
 		id,
@@ -69,12 +67,6 @@ function Edit( {
 
 	const placeholderIcon = <BlockIcon icon={ icon } />;
 
-	const [ isAddingTags, setIsAddingTags ] = useState( false );
-	useEffect( () => {
-		if ( ! isSelected ) {
-			setIsAddingTags( false );
-		}
-	}, [ isSelected ] );
 	const control = ( <>
 		<BlockControls>
 			<>
@@ -95,14 +87,6 @@ function Edit( {
 						/>
 					</Toolbar>
 				</MediaUploadCheck>
-				<Toolbar>
-					<IconButton
-						className={ classnames( [ 'components-toolbar__control', { 'is-active': isAddingTags } ] ) }
-						label={ __( 'Add tags' ) }
-						icon="tag"
-						onClick={ ( ) => setIsAddingTags( ! isAddingTags ) }
-					/>
-				</Toolbar>
 			</>
 		</BlockControls>
 		{ ! url && (
@@ -186,7 +170,7 @@ function Edit( {
 								className={ className }
 								src={ url }
 								alt={ defaultedAlt }
-								onClick={ ( event ) => isAddingTags ? addTag( event ) : false }
+								onClick={ addTag }
 								ref={ imageRef }
 							/>
 						</DotDragArea>
