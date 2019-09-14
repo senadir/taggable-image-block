@@ -1,33 +1,31 @@
 /**
  * External dependencies
  */
-import { useDrag } from 'react-dnd';
+import Draggable from 'react-draggable';
 import classnames from 'classnames';
 /**
- * Internal dependencies
+ * WordPress dependencies
  */
-import types from '../shared';
+import { memo } from '@wordpress/element';
 
-export default function Dot( { id, x, y } ) {
-	const [ { isDragging }, dragRef ] = useDrag( {
-		item: { id, x, y, type: types.DOT },
-		collect: ( monitor ) => {
-			return { isDragging: monitor.isDragging() };
-		},
-	} );
-	if ( isDragging ) {
-		return <div ref={ dragRef } />;
-	}
+function Dot( { id, x, y, onDragStart, onDragStop } ) {
 	return (
-		<div
-			ref={ dragRef }
-			id={ id }
-			className={
-				classnames( [
-					'wp-block-taggable-image-dot',
-					{ 'is-dargging': isDragging },
-				] ) }
-			style={ { left: x, top: y } }
-		/>
+		<Draggable
+			onStart={ onDragStart }
+			onStop={ ( _, { x: newX, y: newY } ) => onDragStop( id, newX, newY ) }
+			defaultPosition={ { x, y } }
+			bounds="parent"
+		>
+			<div
+				id={ id }
+				className={
+					classnames( [
+						'wp-block-taggable-image-dot',
+					] ) }
+				style={ { transform: `translateX(${ x }px) translateY(${ y }px)` } }
+			/>
+		</Draggable>
 	);
 }
+
+export default memo( Dot );
